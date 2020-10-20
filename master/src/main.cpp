@@ -1,44 +1,32 @@
-// библиотека для работы с HTTP-протоколом
 #include <HTTPClient.h>
-// вводим имя и пароль точки доступа
-const char* ssid = "";
-const char* password = "";
- 
+#include "metrics.h"
+#include "http.h"
+
+static constexpr uint16_t BAUD_RATE = 9600;
+static constexpr uint16_t STARTUP_DELAY = 5000;
+static constexpr auto ENDPOINT = "http://drop-table.tech/api";
+
 void setup() {
-    // иницилизируем монитор порта
-    Serial.begin(9600);
-    // запас времени на открытие монитора порта — 5 секунд
-    delay(5000);
-    // подключаемся к Wi-Fi сети
-    WiFi.begin(ssid, password);
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);
-        Serial.println("Connecting to Wi-Fi..");
-    }
-    Serial.println("Connected to the Wi-Fi network");
+    Serial.begin(BAUD_RATE);
+    delay(STARTUP_DELAY);
 }
  
 void loop() {
-    // выполняем проверку подключения к беспроводной сети
-    if ((WiFi.status() == WL_CONNECTED)) {
-        // создаем объект для работы с HTTP
-        HTTPClient http;
-        // подключаемся к тестовому серверу с помощью HTTP
-        http.begin("http://drop-table.tech/api");
-        // делаем GET запрос
-        int httpCode = http.GET();
-        // проверяем успешность запроса
-        if (httpCode > 0) {
-            // выводим ответ сервера
-            String payload = http.getString();
-            Serial.println(httpCode);
-            Serial.println(payload);
-        }
-        else {
-            Serial.println("Error on HTTP request");
-        }
-        // освобождаем ресурсы микроконтроллера
-        http.end();
+    auto metrics = innohack::Metrics::getInstance();
+    innohack::SimpleModel metric_model {
+        {"gas", "10"}
+    };
+    metrics.reportMetric(metric_model);
+
+    innohack::Metrics::metric_type metric {"gas", "10"};
+    metrics.reportMetric(metric);
+
+    auto http = innohack::HTTP::getInstance();
+    auto result = http.get<String>(ENDPOINT);
+    if(result.first) {
+        Serial1.print(result.second);
+    } 
+    else {
+        Serial1.print("Error while sending GET");
     }
-    delay(10000);
 }
