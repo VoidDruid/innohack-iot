@@ -14,7 +14,7 @@ void setup() {
 void loop() {
     auto metrics = innohack::Metrics::getInstance();
     innohack::SimpleModel metric_model {
-        {"gas", "10"}
+        {{"gas", "10"}}
     };
     metrics.reportMetric(metric_model);
 

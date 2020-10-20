@@ -5,7 +5,7 @@ using namespace innohack;
 
 SimpleModel::SimpleModel(const model_type& model) : m_model{model} {}
 
-String SimpleModel::toJson() {
+std::string SimpleModel::toJson() {
     std::stringstream json;
     json << "{";
     for(auto elem : m_model) {

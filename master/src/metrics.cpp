@@ -1,3 +1,5 @@
+#include <sstream>
+
 #include "metrics.h"
 #include "http.h"
 
@@ -14,11 +16,12 @@ Metrics& Metrics::getInstance() {
 
 void Metrics::reportMetric(metric_type& metric) {
     auto& http = HTTP::getInstance();
-    String endpoint = SERVER_DOMAIN + String("/") + METRICS_ENDPOINT;
+    std::stringstream endpoint;
+    endpoint << SERVER_DOMAIN << "/" << METRICS_ENDPOINT;
     SimpleModel model {
-        { metric.first, metric.second }
+        { { metric.first, metric.second } }
     };
-    auto result = http.post(endpoint, model);
+    auto result = http.post(String(endpoint.str().c_str()), model);
     
     if(!result.first) {
         m_queued_requests.push(metric);
@@ -27,8 +30,9 @@ void Metrics::reportMetric(metric_type& metric) {
 
 void Metrics::reportMetric(SimpleModel& metrics) {
     auto& http = HTTP::getInstance();
-    String endpoint = SERVER_DOMAIN + String("/") + METRICS_ENDPOINT;
-    auto result = http.post(endpoint, metrics);
+    std::stringstream endpoint;
+    endpoint << SERVER_DOMAIN << "/" << METRICS_ENDPOINT;
+    auto result = http.post(String(endpoint.str().c_str()), metrics);
     
     if(!result.first) {
         for(auto metric : metrics.toMap()) {
@@ -43,11 +47,12 @@ void Metrics::checkQueue() {
     while(!m_queued_requests.empty() && current_retry != MAX_RETRIES) {
         auto metric = m_queued_requests.top();
         auto& http = HTTP::getInstance();
-        String endpoint = SERVER_DOMAIN + String("/") + METRICS_ENDPOINT;
+        std::stringstream endpoint;
+        endpoint << SERVER_DOMAIN << "/" << METRICS_ENDPOINT;
         SimpleModel model {
-            { metric.first, metric.second }
+            { { metric.first, metric.second } }
         };
-        auto result = http.post(endpoint, model);
+        auto result = http.post(String(endpoint.str().c_str()), model);
         
         if(result.first) {
             m_queued_requests.pop();

@@ -19,7 +19,7 @@ HTTP& HTTP::getInstance() {
     return http;
 }
 
-std::pair<bool, String> post(const String& url, SimpleModel& model) {
+std::pair<bool, String> HTTP::post(const String& url, SimpleModel& model) {
     if ((WiFi.status() == WL_CONNECTED)) {
         HTTPClient http;
         http.begin(url.c_str());

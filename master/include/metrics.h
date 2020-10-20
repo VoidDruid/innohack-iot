@@ -9,7 +9,7 @@
 namespace innohack {
 class Metrics {
     public:
-        using metric_type = std::pair<String, String>;
+        using metric_type = std::pair<std::string, std::string>;
         static Metrics& getInstance();
         void reportMetric(metric_type& metric);
         void reportMetric(SimpleModel& metric);

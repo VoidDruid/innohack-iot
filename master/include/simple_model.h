@@ -5,11 +5,11 @@
 
 namespace innohack {
 class SimpleModel {
-using model_type = std::map<String, String>;
+using model_type = std::map<std::string, std::string>;
 public:
     SimpleModel() = default;
     SimpleModel(const model_type& model);
-    String toJson();
+    std::string toJson();
     model_type toMap();
 private:
     model_type m_model;
