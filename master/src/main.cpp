@@ -24,9 +24,12 @@ void loop() {
     auto http = innohack::HTTP::getInstance();
     auto result = http.get<String>(ENDPOINT);
     if(result.first) {
-        Serial1.print(result.second);
+        Serial.print(result.second);
+        Serial.print(result.second);
     } 
     else {
         Serial1.print("Error while sending GET");
     }
+    metrics.checkQueue();
+    delay(1000);
 }

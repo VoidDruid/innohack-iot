@@ -1,17 +1,20 @@
 #include "http.h"
 
 using namespace innohack;
-static constexpr auto ssid = "spaceship";
+static constexpr auto ssid = "Spaceship";
 static constexpr auto password = "private147852";
 static constexpr uint16_t DELAY = 1000;
 
 void HTTP::init() {
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);
+        delay(DELAY);
         Serial.println("Connecting to Wi-Fi..");
     }
     Serial.println("Connected to the Wi-Fi network");
+}
+HTTP::HTTP() {
+    init();
 }
 
 HTTP& HTTP::getInstance() {

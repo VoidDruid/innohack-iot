@@ -15,6 +15,7 @@ Metrics& Metrics::getInstance() {
 }
 
 void Metrics::reportMetric(metric_type& metric) {
+    Serial.println("reportMetric()");
     auto& http = HTTP::getInstance();
     std::stringstream endpoint;
     endpoint << SERVER_DOMAIN << "/" << METRICS_ENDPOINT;
@@ -29,6 +30,7 @@ void Metrics::reportMetric(metric_type& metric) {
 }
 
 void Metrics::reportMetric(SimpleModel& metrics) {
+    Serial.println("reportMetric()");
     auto& http = HTTP::getInstance();
     std::stringstream endpoint;
     endpoint << SERVER_DOMAIN << "/" << METRICS_ENDPOINT;
@@ -42,6 +44,7 @@ void Metrics::reportMetric(SimpleModel& metrics) {
 }
 
 void Metrics::checkQueue() {
+    Serial.println("checkQueue()");
     uint8_t current_retry{0};
 
     while(!m_queued_requests.empty() && current_retry != MAX_RETRIES) {

@@ -26,6 +26,6 @@ class HTTP {
         std::pair<bool, String> post(const String& url, SimpleModel& model);
     private:
         void init();
-        HTTP() = default;
+        HTTP();
 };
 }
