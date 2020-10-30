@@ -3,21 +3,22 @@
 #include <BLEDevice.h>
 
 namespace innohack {
-class Bluetooth : public BLEServerCallbacks { 
+class BluetoothServer : public BLEServerCallbacks { 
     public:
-        static Bluetooth& getInstance();
+        static BluetoothServer& getInstance();
         void onConnect(BLEServer* pServer);
         void onDisconnect(BLEServer* pServer);
-        bool isConnected() { return m_isConnected; }
+        bool isConnected();
+        void run();
     private:
         void init();
-        Bluetooth();
-        Bluetooth& operator=(const Bluetooth&) = delete;
-        Bluetooth(const Bluetooth&) = delete;
+        BluetoothServer();
+        BluetoothServer& operator=(const BluetoothServer&) = delete;
+        BluetoothServer(const BluetoothServer&) = delete;
 
         BLEServer *m_server{nullptr};
         BLEService *m_service{nullptr};
-        BLECharacteristic *m_characteristic{nullptr};
         bool m_isConnected{false};
+        uint8_t value{};
 };
 }

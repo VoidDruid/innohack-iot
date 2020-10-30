@@ -22,19 +22,20 @@ void loop() {
     auto& http = innohack::HTTP::getInstance();
     auto result = http.post(ENDPOINT, metric_model);
     if(result.first) {
-        Serial.print(result.second);
+        Serial.println(result.second);
     } 
     else {
-        Serial.print("Error while sending GET");
+        Serial.println("Error while sending GET");
     }
     metrics.checkQueue();
-    auto& bluetooth = innohack::Bluetooth::getInstance();
+    auto& bluetooth = innohack::BluetoothServer::getInstance();
     auto connected = bluetooth.isConnected();
     if(connected) {
-        Serial.print("Connected");
+        Serial.println("Connected");
     } 
     else {
-        Serial.print("Not connected");
+        Serial.println("Not connected");
     }
+    bluetooth.run();
     delay(1000);
 }

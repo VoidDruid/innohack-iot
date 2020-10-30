@@ -2,8 +2,8 @@
 #include "http.h"
 
 using namespace innohack;
-static constexpr auto ssid = "Spaceship";
-static constexpr auto password = "private147852";
+static constexpr auto ssid = "TP-Link_3B86";
+static constexpr auto password = "36393640";
 static constexpr uint16_t DELAY = 1000;
 static constexpr uint8_t HTTP_OK = 200;
 
@@ -39,7 +39,7 @@ std::pair<bool, String> HTTP::post(const String& url, SimpleModel& model) {
         String payload = http.getString();
         return std::make_pair<bool, String>(true, String(payload));
     }
-    Serial.print(httpCode);
+    Serial.println(httpCode);
     http.end();
     return std::make_pair<bool, String>(false, String());
 }
