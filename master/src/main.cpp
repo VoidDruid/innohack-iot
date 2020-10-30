@@ -11,9 +11,9 @@ void setup() {
     Serial.begin(BAUD_RATE);
     delay(STARTUP_DELAY);
 }
- 
+ #define CLIENT
 void loop() {
-    auto metrics = innohack::Metrics::getInstance();
+    /*auto metrics = innohack::Metrics::getInstance();
     innohack::SimpleModel metric_model {
         {{"gas", "10"}}
     };
@@ -27,7 +27,8 @@ void loop() {
     else {
         Serial.println("Error while sending GET");
     }
-    metrics.checkQueue();
+    metrics.checkQueue();*/
+    #ifdef SERVER 
     auto& bluetooth = innohack::BluetoothServer::getInstance();
     auto connected = bluetooth.isConnected();
     if(connected) {
@@ -37,5 +38,10 @@ void loop() {
         Serial.println("Not connected");
     }
     bluetooth.run();
+    #endif
+    #ifdef CLIENT
+    auto& bluetooth = innohack::BluetoothClient::getInstance();
+    bluetooth.run();
+    #endif
     delay(1000);
 }
