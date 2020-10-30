@@ -51,8 +51,6 @@ bool BluetoothServer::isConnected() {
 void BluetoothServer::run() {
     if (m_isConnected) {
         for(auto& property : properties) {
-            
-
             Serial.printf("*** NOTIFY: %d ***\n", value);
             property.characteristic->setValue(&value, 1);
             property.characteristic->notify();
