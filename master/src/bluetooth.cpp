@@ -62,10 +62,6 @@ bool BluetoothServer::isConnected() {
     return m_isConnected;
 }
 
-void fillPropertiesWithData() {
-
-}
-
 void BluetoothServer::run() {
     if (m_isConnected) {
         for(auto& property : properties) {
@@ -212,6 +208,16 @@ void BluetoothClient::run() {
     if(timer == SEND_METRIC_PERIOD && !metric.empty()) {
         metric.emplace(std::make_pair<std::string, std::string>(
             "uuid", BLE_SERVER_NAME
+        ));
+        SimpleModel nice_model{{
+            {"1" ,"123"},
+            {"2" ,"12555"},
+            {"5" ,"121232313"}
+        }
+        };
+
+        metric.emplace(std::make_pair<std::string, std::string>(
+            "beacons", nice_model.toJson().c_str()
         ));
         SimpleModel model{metric};
         Metrics::getInstance().reportMetric(model);

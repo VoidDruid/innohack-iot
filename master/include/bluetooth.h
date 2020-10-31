@@ -21,7 +21,6 @@ class BluetoothServer : public BLEServerCallbacks {
         BLEServer *m_server{nullptr};
         BLEService *m_service{nullptr};
         bool m_isConnected{false};
-        uint8_t value{};
 };
 
 class BluetoothClient : public BLEAdvertisedDeviceCallbacks {
