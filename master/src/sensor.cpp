@@ -2,7 +2,7 @@
 
 using namespace innohack;
 
-constexpr uint8_t lightSensorPin = 15;
+constexpr uint8_t lightSensorPin = 34;
 
 Sensor::Sensor()
     : adapters{std::make_tuple<TroykaLight>(TroykaLight(lightSensorPin))} {
