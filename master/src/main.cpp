@@ -13,21 +13,6 @@ void setup() {
 }
  #define CLIENT
 void loop() {
-    /*auto metrics = innohack::Metrics::getInstance();
-    innohack::SimpleModel metric_model {
-        {{"gas", "10"}}
-    };
-    metrics.reportMetric(metric_model);
-
-    auto& http = innohack::HTTP::getInstance();
-    auto result = http.post(ENDPOINT, metric_model);
-    if(result.first) {
-        Serial.println(result.second);
-    } 
-    else {
-        Serial.println("Error while sending GET");
-    }
-    metrics.checkQueue();*/
     #ifdef SERVER 
     auto& bluetooth = innohack::BluetoothServer::getInstance();
     auto connected = bluetooth.isConnected();
