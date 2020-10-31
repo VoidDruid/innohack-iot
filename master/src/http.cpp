@@ -34,6 +34,8 @@ std::pair<bool, String> HTTP::post(const String& url, SimpleModel& model) {
 
     auto payload = model.toJson().c_str();
     auto payloadSize = model.toJson().length();
+    Serial.println("Payload: ");
+    Serial.println(payload);
     int httpCode = http.POST((uint8_t*)payload, payloadSize);
     if (httpCode == HTTP_OK) {
         String payload = http.getString();

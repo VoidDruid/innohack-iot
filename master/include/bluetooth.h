@@ -30,6 +30,10 @@ class BluetoothClient : public BLEAdvertisedDeviceCallbacks {
         void run();
         static void temperatureNotifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, 
                                         uint8_t* pData, size_t length, bool isNotify);
+        static void humidityNotifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, 
+                                        uint8_t* pData, size_t length, bool isNotify);
+        static void ligthNotifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, 
+                                        uint8_t* pData, size_t length, bool isNotify);
     private:
         void init();
         BluetoothClient();
