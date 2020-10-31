@@ -11,7 +11,8 @@ void setup() {
     Serial.begin(BAUD_RATE);
     delay(STARTUP_DELAY);
 }
- #define CLIENT
+
+#define SERVER
 void loop() {
     #ifdef SERVER 
     auto& bluetooth = innohack::BluetoothServer::getInstance();

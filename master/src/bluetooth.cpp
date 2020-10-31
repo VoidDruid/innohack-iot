@@ -65,8 +65,8 @@ bool BluetoothServer::isConnected() {
 void BluetoothServer::run() {
     if (m_isConnected) {
         for(auto& property : properties) {
-            property.value = Sensor::getSensorData(property.type);
-            Serial.printf("%s: %d\n", Sensor::to_string(property.type).c_str(), property.value);
+            property.value = Sensor::getInstance().getSensorData(property.type);
+            Serial.printf("%s: %f\n", Sensor::to_string(property.type).c_str(), property.value);
             property.characteristic->setValue(property.value);
             property.characteristic->notify();
         }   
@@ -143,10 +143,9 @@ bool BluetoothClient::connectToServer() {
 
 void BluetoothClient::temperatureNotifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, 
                                         uint8_t* pData, size_t length, bool isNotify) {
-    uint32_t data = *((uint32_t*)pData);
-
+    Sensor::sensor_value_type data = *((Sensor::sensor_value_type*)pData);
     Serial.print("temperature: ");
-    Serial.printf("%d\n", data);
+    Serial.printf("%f\n", data);
 
     std::stringstream ss;    
     ss << data;  
@@ -159,9 +158,9 @@ void BluetoothClient::temperatureNotifyCallback(BLERemoteCharacteristic* pBLERem
 
 void BluetoothClient::ligthNotifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, 
                                         uint8_t* pData, size_t length, bool isNotify) {
-    uint32_t data = *((uint32_t*)pData);
+    Sensor::sensor_value_type data = *((Sensor::sensor_value_type*)pData);
     Serial.print("light: ");
-    Serial.printf("%d\n", data);
+    Serial.printf("%f\n", data);
 
     std::stringstream ss;    
     ss << data;  
@@ -174,9 +173,9 @@ void BluetoothClient::ligthNotifyCallback(BLERemoteCharacteristic* pBLERemoteCha
 
 void BluetoothClient::humidityNotifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, 
                                         uint8_t* pData, size_t length, bool isNotify) {
-    uint32_t data = *((uint32_t*)pData);
+    Sensor::sensor_value_type data = *((Sensor::sensor_value_type*)pData);
     Serial.print("humidity: ");
-    Serial.printf("%d\n", data);
+    Serial.printf("%f\n", data);
     
     std::stringstream ss;    
     ss << data;  
@@ -221,6 +220,7 @@ void BluetoothClient::run() {
         ));
         SimpleModel model{metric};
         Metrics::getInstance().reportMetric(model);
+        metric.clear();
         timer = 0;
     }
     timer++;

@@ -1,0 +1,3 @@
+[submodule "master/lib/TroykaLight"]
+	path = master/lib/TroykaLight
+	url = git@github.com:amperka/TroykaLight.git

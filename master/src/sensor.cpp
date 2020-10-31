@@ -2,20 +2,33 @@
 
 using namespace innohack;
 
-Sensor::sensor_value_type Sensor::getSensorData(SensorType type) {
-    static int humidity = 0;
-    static int light = 0;
-    static int temperature = 0;
+constexpr uint8_t lightSensorPin = 15;
 
+Sensor::Sensor()
+    : adapters{std::make_tuple<TroykaLight>(TroykaLight(lightSensorPin))} {
+    init();
+}
+
+void Sensor::init() {
+}
+
+Sensor& Sensor::getInstance() {
+    static Sensor instance;
+    return instance;
+}
+
+Sensor::sensor_value_type Sensor::getSensorData(SensorType type) {
     switch(type) {
         case SensorType::humidity: {
-            return humidity+=10;
+            return 40.0;
         }
         case SensorType::light: {
-            return light+=100;
+            TroykaLight& lightSensor = std::get<0>(adapters);
+            lightSensor.read();
+            return lightSensor.getLightLux();
         }
         case SensorType::temperature: {
-            return temperature+=1000;
+            return 100.0;
         }
     }
 }
