@@ -4,3 +4,6 @@
 [submodule "master/lib/TroykaDHT"]
 	path = master/lib/TroykaDHT
 	url = git@github.com:amperka/TroykaDHT.git
+[submodule "master/lib/MQ2"]
+	path = master/lib/MQ2
+	url = git@github.com:labay11/MQ-2-sensor-library.git

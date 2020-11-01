@@ -1,33 +1,30 @@
-#include <HTTPClient.h>
-#include "metrics.h"
-#include "http.h"
-#include "bluetooth.h"
+#include <MQ2.h>
+#include <Wire.h> 
+//I2C pins declaration
 
-static constexpr uint16_t BAUD_RATE = 9600;
-static constexpr uint16_t STARTUP_DELAY = 5000;
-static constexpr auto ENDPOINT = "http://drop-table.tech/api";
+int Analog_Input = 15;
+int lpg, co, smoke;
 
-void setup() {
-    Serial.begin(BAUD_RATE);
-    delay(STARTUP_DELAY);
+MQ2 mq2(Analog_Input);
+
+void setup(){
+  Serial.begin(9600);
+  mq2.begin();
 }
-
-#define SERVER
-void loop() {
-    #ifdef SERVER 
-    auto& bluetooth = innohack::BluetoothServer::getInstance();
-    auto connected = bluetooth.isConnected();
-    if(connected) {
-        Serial.println("Connected");
-    } 
-    else {
-        Serial.println("Not connected");
-    }
-    bluetooth.run();
-    #endif
-    #ifdef CLIENT
-    auto& bluetooth = innohack::BluetoothClient::getInstance();
-    bluetooth.run();
-    #endif
-    delay(1000);
+void loop(){
+  //float* values= mq2.read(true); //set it false if you don't want to print the values in the Serial
+  //lpg = values[0];
+  lpg = mq2.readLPG();
+  //co = values[1];
+  co = mq2.readCO();
+  //smoke = values[2];
+  smoke = mq2.readSmoke();
+  Serial.println("LPG:");
+  Serial.println(lpg);
+  Serial.println(" CO:");
+  Serial.println(co);
+  Serial.println("SMOKE:");
+  Serial.println(smoke);
+  Serial.println(" PPM");
+  delay(1000);
 }
