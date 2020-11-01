@@ -1,3 +1,6 @@
 [submodule "master/lib/TroykaLight"]
 	path = master/lib/TroykaLight
 	url = git@github.com:amperka/TroykaLight.git
+[submodule "master/lib/TroykaDHT"]
+	path = master/lib/TroykaDHT
+	url = git@github.com:amperka/TroykaDHT.git
