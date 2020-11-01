@@ -34,11 +34,11 @@ struct Property {
 };
 
 std::array<Property, 5> properties = {
-    Property{ Sensor::SensorType::temperature, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a8", BLEUUID((uint16_t)0x2903), nullptr, BluetoothClient::notifyCallback, 0 },
-    Property{ Sensor::SensorType::humidity, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a7", BLEUUID((uint16_t)0x2902), nullptr, BluetoothClient::notifyCallback, 0 },
-    Property{ Sensor::SensorType::light, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a6", BLEUUID((uint16_t)0x2901), nullptr, BluetoothClient::notifyCallback, 0 },
-    Property{ Sensor::SensorType::CO, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a5", BLEUUID((uint16_t)0x2900), nullptr, BluetoothClient::notifyCallback, 0 },
-    Property{ Sensor::SensorType::smoke, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a4", BLEUUID((uint16_t)0x2899), nullptr, BluetoothClient::notifyCallback, 0 }
+    Property{ Sensor::SensorType::temperature, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a8", BLEUUID((uint16_t)0x2905), nullptr, BluetoothClient::notifyCallback, 0 },
+    Property{ Sensor::SensorType::humidity, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a7", BLEUUID((uint16_t)0x2904), nullptr, BluetoothClient::notifyCallback, 0 },
+    Property{ Sensor::SensorType::light, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a6", BLEUUID((uint16_t)0x2903), nullptr, BluetoothClient::notifyCallback, 0 },
+    Property{ Sensor::SensorType::CO, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a5", BLEUUID((uint16_t)0x2902), nullptr, BluetoothClient::notifyCallback, 0 },
+    Property{ Sensor::SensorType::smoke, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a4", BLEUUID((uint16_t)0x2901), nullptr, BluetoothClient::notifyCallback, 0 }
 };
 
 SimpleModel::model_type metric{};
