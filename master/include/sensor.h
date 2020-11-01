@@ -4,6 +4,7 @@
 #include <string>
 #include <tuple>
 #include <TroykaLight.h>
+#include <TroykaDHT.h>
 
 namespace innohack {
 
@@ -21,6 +22,9 @@ class Sensor {
     private:
         Sensor();
         void init();
-        std::tuple<TroykaLight> adapters;
+        std::tuple<TroykaLight, DHT> adapters;
+        std::pair<float, float> getDHTData();
+        DHT& getDHT();
+        TroykaLight& getLight();
 };
 }

@@ -128,7 +128,7 @@ bool BluetoothClient::connectToServer() {
         Serial.println(SERVICE_UUID);
         return (false);
     }
-    
+
     for(auto& property : properties) {
         property.remoteCharacteristic = pRemoteService->getCharacteristic(property.UUID);
         if(!property.remoteCharacteristic) {
@@ -208,16 +208,7 @@ void BluetoothClient::run() {
         metric.emplace(std::make_pair<std::string, std::string>(
             "uuid", BLE_SERVER_NAME
         ));
-        SimpleModel nice_model{{
-            {"1" ,"123"},
-            {"2" ,"12555"},
-            {"5" ,"121232313"}
-        }
-        };
 
-        metric.emplace(std::make_pair<std::string, std::string>(
-            "beacons", nice_model.toJson().c_str()
-        ));
         SimpleModel model{metric};
         Metrics::getInstance().reportMetric(model);
         metric.clear();
