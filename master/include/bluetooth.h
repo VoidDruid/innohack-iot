@@ -27,11 +27,7 @@ class BluetoothClient : public BLEAdvertisedDeviceCallbacks {
     public:
         static BluetoothClient& getInstance();
         void run();
-        static void temperatureNotifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, 
-                                        uint8_t* pData, size_t length, bool isNotify);
-        static void humidityNotifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, 
-                                        uint8_t* pData, size_t length, bool isNotify);
-        static void ligthNotifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, 
+        static void notifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, 
                                         uint8_t* pData, size_t length, bool isNotify);
     private:
         void init();

@@ -4,14 +4,24 @@ using namespace innohack;
 
 constexpr uint8_t lightSensorAnalogPin = 34;
 constexpr uint8_t dhtSensorDigitalPin = 15;
+constexpr uint8_t gasSensorDigitalPin = 16;
 
 Sensor::Sensor()
-    : adapters{std::make_tuple<TroykaLight, DHT>(TroykaLight(lightSensorAnalogPin), DHT(dhtSensorDigitalPin, DHT11))} {
+    : adapters
+    {
+        std::make_tuple<TroykaLight, DHT, MQ2>(
+            TroykaLight(lightSensorAnalogPin),
+            DHT(dhtSensorDigitalPin, DHT11),
+            MQ2(gasSensorDigitalPin)
+        )
+     } 
+{
     init();
 }
 
 void Sensor::init() {
     getDHT().begin();
+    getGas().begin();
 }
 
 std::pair<float, float> Sensor::getDHTData() {
@@ -33,8 +43,8 @@ std::pair<float, float> Sensor::getDHTData() {
             Serial.println("DHT: Sensor not connected");
             break;
         }
-    return std::make_pair<float, float>(NAN, NAN);
     }
+    return std::make_pair<float, float>(NAN, NAN);
 }
 
 DHT& Sensor::getDHT() {
@@ -43,6 +53,10 @@ DHT& Sensor::getDHT() {
 
 TroykaLight& Sensor::getLight() {
     return std::get<0>(adapters);
+}
+
+MQ2& Sensor::getGas() {
+    return std::get<2>(adapters);
 }
 
 Sensor& Sensor::getInstance() {
@@ -63,7 +77,14 @@ Sensor::sensor_value_type Sensor::getSensorData(SensorType type) {
         case SensorType::temperature: {
             return getDHTData().first;
         }
+        case SensorType::CO: {
+            return getGas().readCO();
+        }
+        case SensorType::smoke: {
+            return getGas().readSmoke();
+        }
     }
+    return Sensor::sensor_value_type{};
 }
 
 std::string Sensor::to_string(Sensor::SensorType type) {
@@ -77,5 +98,12 @@ std::string Sensor::to_string(Sensor::SensorType type) {
         case SensorType::temperature: {
             return "temperature";
         }
+        case SensorType::CO: {
+            return "CO";
+        }
+        case SensorType::smoke: {
+            return "smoke";
+        }
     }
+    return {};
 }

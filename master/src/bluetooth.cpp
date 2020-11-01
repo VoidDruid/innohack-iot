@@ -33,10 +33,12 @@ struct Property {
     Sensor::sensor_value_type value;
 };
 
-std::array<Property, 3> properties = {
-    Property{ Sensor::SensorType::temperature, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a8", BLEUUID((uint16_t)0x2903), nullptr, BluetoothClient::temperatureNotifyCallback, 0 },
-    Property{ Sensor::SensorType::humidity, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a7", BLEUUID((uint16_t)0x2902), nullptr, BluetoothClient::humidityNotifyCallback, 0 },
-    Property{ Sensor::SensorType::light, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a6", BLEUUID((uint16_t)0x2901), nullptr, BluetoothClient::ligthNotifyCallback, 0 }
+std::array<Property, 5> properties = {
+    Property{ Sensor::SensorType::temperature, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a8", BLEUUID((uint16_t)0x2903), nullptr, BluetoothClient::notifyCallback, 0 },
+    Property{ Sensor::SensorType::humidity, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a7", BLEUUID((uint16_t)0x2902), nullptr, BluetoothClient::notifyCallback, 0 },
+    Property{ Sensor::SensorType::light, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a6", BLEUUID((uint16_t)0x2901), nullptr, BluetoothClient::notifyCallback, 0 },
+    Property{ Sensor::SensorType::CO, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a5", BLEUUID((uint16_t)0x2900), nullptr, BluetoothClient::notifyCallback, 0 },
+    Property{ Sensor::SensorType::smoke, nullptr, "beb5483e-36e1-4688-b7f5-ea07361b26a4", BLEUUID((uint16_t)0x2899), nullptr, BluetoothClient::notifyCallback, 0 }
 };
 
 SimpleModel::model_type metric{};
@@ -141,47 +143,25 @@ bool BluetoothClient::connectToServer() {
     return true;
 }
 
-void BluetoothClient::temperatureNotifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, 
+void BluetoothClient::notifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, 
                                         uint8_t* pData, size_t length, bool isNotify) {
     Sensor::sensor_value_type data = *((Sensor::sensor_value_type*)pData);
-    Serial.print("temperature: ");
-    Serial.printf("%f\n", data);
-
-    std::stringstream ss;    
-    ss << data;  
-    std::string str = ss.str();
-    auto pair = std::make_pair<std::string, std::string>(
-        "temperature", ss.str()
-    );
-    metric.emplace(pair);
-}
-
-void BluetoothClient::ligthNotifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, 
-                                        uint8_t* pData, size_t length, bool isNotify) {
-    Sensor::sensor_value_type data = *((Sensor::sensor_value_type*)pData);
-    Serial.print("light: ");
-    Serial.printf("%f\n", data);
-
-    std::stringstream ss;    
-    ss << data;  
-    std::string str = ss.str();
-    auto pair = std::make_pair<std::string, std::string>(
-        "light", ss.str()
-    );
-    metric.emplace(pair);
-}
-
-void BluetoothClient::humidityNotifyCallback(BLERemoteCharacteristic* pBLERemoteCharacteristic, 
-                                        uint8_t* pData, size_t length, bool isNotify) {
-    Sensor::sensor_value_type data = *((Sensor::sensor_value_type*)pData);
-    Serial.print("humidity: ");
-    Serial.printf("%f\n", data);
     
     std::stringstream ss;    
     ss << data;  
     std::string str = ss.str();
+
+    std::string propertyName;
+    std::find_if(properties.begin(), properties.end(), [&propertyName, pBLERemoteCharacteristic](Property prop){
+        if (pBLERemoteCharacteristic->getUUID().toString() == prop.UUID) {
+            propertyName = Sensor::to_string(prop.type);
+            return true;
+        }
+        return false;
+    });
+
     auto pair = std::make_pair<std::string, std::string>(
-        "humidity", ss.str()
+        propertyName.c_str(), ss.str()
     );
     metric.emplace(pair);
 }
